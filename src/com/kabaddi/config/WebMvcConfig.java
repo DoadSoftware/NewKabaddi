@@ -9,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 @EnableWebMvc
 @Configuration
@@ -29,6 +31,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
         return resolver;
+    }
+
+    @Bean(name = "multipartResolver")
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 
     @Override

@@ -139,7 +139,6 @@ table td select {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: fixed;
     top: 10px;
     left: 0;
     width: calc(100% - 72px);
@@ -179,8 +178,8 @@ table td select {
 	<script src="<c:url value='/webjars/jquery/3.7.1/jquery.min.js'/>"></script>
 	<script src="<c:url value='/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js'/>"></script>
 	<script src="<c:url value='/resources/javascript/index.js'/>"></script>  
-	<script src="<c:url value='/webjars/select2/4.1.0/js/select2.min.js'/>"></script>
-	<link rel="stylesheet" href="<c:url value='/webjars/select2/4.1.0/css/select2.min.css'/>"/>
+	<link rel="stylesheet" href="<c:url value='/webjars/select2/4.0.13/css/select2.min.css'/>"/>
+	<script src="<c:url value='/webjars/select2/4.0.13/js/select2.min.js'/>"></script>
 	
 </head>
 <body onload="afterPageLoad('SETUP');">

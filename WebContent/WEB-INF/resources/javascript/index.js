@@ -724,11 +724,11 @@ function processKabaddiProcedures(whatToProcess, whichInput)
 				if(data){
 					if($('#matchFileTimeStamp').val() != data.matchFileTimeStamp) {
 						document.getElementById('matchFileTimeStamp').value = data.matchFileTimeStamp;
-						session_match = data;
+						/*session_match = data;
 						addItemsToList('LOAD_MATCH',data);
 						addItemsToList('LOAD_EVENTS',data);
 						//alert(data.api_Match.homeTeamStats.points[0].totalPoints)
-						document.getElementById('select_event_div').style.display = 'none';
+						document.getElementById('select_event_div').style.display = 'none';*/
 					}
 					addItemsToList('LOAD_MATCH',data);
 					
@@ -1165,18 +1165,28 @@ function addItemsToList(whatToProcess, dataToProcess)
 							    option.text = hp.jersey_number + ' - ' +  hp.full_name;
 							    select.appendChild(option);
 							});
-							dataToProcess.homeSubstitutes.forEach(function(hp,index,arr){
+							if (dataToProcess.homeSubstitutes) {
+							    dataToProcess.homeSubstitutes.forEach(function(hp) {
+							        option = document.createElement('option');
+							        option.value = hp.playerId;
+							        option.text = hp.jersey_number + ' - ' + hp.full_name;
+							        select.appendChild(option);
+							    });
+							}
+							/*dataToProcess.homeSubstitutes.forEach(function(hp,index,arr){
 								option = document.createElement('option');
 								option.value = hp.playerId;
 							    option.text = hp.jersey_number + ' - ' + hp.full_name;
 							    select.appendChild(option);
-							});
-							dataToProcess.homeOtherSquad.forEach(function(hp,index,arr){
-								option = document.createElement('option');
-								option.value = hp.playerId;
-							    option.text = hp.jersey_number + ' - ' + hp.full_name;
-							    select.appendChild(option);
-							});
+							});*/
+							if (dataToProcess.homeOtherSquad) {
+							    dataToProcess.homeOtherSquad.forEach(function(hp) {
+							        option = document.createElement('option');
+							        option.value = hp.playerId;
+							        option.text = hp.jersey_number + ' - ' + hp.full_name;
+							        select.appendChild(option);
+							    });
+							}
 						} else if(j==4) {
 							select.name = 'selectAwayPlayers';
 							select.id = 'awayPlayer_' + (i + 1);
@@ -1186,32 +1196,40 @@ function addItemsToList(whatToProcess, dataToProcess)
 							    option.text = ap.jersey_number + ' - ' + ap.full_name;
 							    select.appendChild(option);
 							});
-							dataToProcess.awaySubstitutes.forEach(function(ap,index,arr){
-								option = document.createElement('option');
-								option.value = ap.playerId;
-							    option.text = ap.jersey_number + ' - ' + ap.full_name;
-							    select.appendChild(option);
-							});
-							dataToProcess.awayOtherSquad.forEach(function(ap,index,arr){
-								option = document.createElement('option');
-								option.value = ap.playerId;
-							    option.text = ap.jersey_number + ' - ' + ap.full_name;
-							    select.appendChild(option);
-							});
+							if (dataToProcess.awaySubstitutes) {
+							    dataToProcess.awaySubstitutes.forEach(function(ap) {
+							        option = document.createElement('option');
+							        option.value = ap.playerId;
+							        option.text = ap.jersey_number + ' - ' + ap.full_name;
+							        select.appendChild(option);
+							    });
+							}
+							if (dataToProcess.awayOtherSquad) {
+							    dataToProcess.awayOtherSquad.forEach(function(ap) {
+							        option = document.createElement('option');
+							        option.value = ap.playerId;
+							        option.text = ap.jersey_number + ' - ' + ap.full_name;
+							        select.appendChild(option);
+							    });
+							}
 						}
 					    select.selectedIndex = i;
 						if(j==1) {
-							dataToProcess.setupHomeTeam.split(",").forEach(function (ht) {
-								if(ht.split("|")[0] == (i + 1)) {
-									select.value = ht.split("|")[1];
-								}
-							});
+							if (dataToProcess.setupHomeTeam) {
+							    dataToProcess.setupHomeTeam.split(",").forEach(function(ht) {
+							        if (ht.split("|")[0] == (i + 1)) {
+							            select.value = ht.split("|")[1];
+							        }
+							    });
+							}
 						} else if(j==4) {
-							dataToProcess.setupAwayTeam.split(",").forEach(function (at) {
-								if(at.split("|")[0] == (i + 1)) {
-									select.value = at.split("|")[1];
-								}
-							});
+							if (dataToProcess.setupAwayTeam) {
+							    dataToProcess.setupAwayTeam.split(",").forEach(function(at) {
+							        if (at.split("|")[0] == (i + 1)) {
+							            select.value = at.split("|")[1];
+							        }
+							    });
+							}
 						}
 						break;
 					case 2: case 5:
@@ -1238,47 +1256,52 @@ function addItemsToList(whatToProcess, dataToProcess)
 							}
 						    select.appendChild(option);
 						}
-						if(i <= 6) {
-							if(j==2) {
-								
-								dataToProcess.setupHomeTeam.split(",").forEach(function (ht) {
-									
-									if(ht.split("|")[0] == (i + 1)) {
-										dataToProcess.homeSquad.forEach(function (hs) {
-											if(ht.split("|")[1] == hs.playerId) {
-												select.value = hs.captain;
-											}
-										});
-									}
-								});
-							} else if(j==5) {
-								dataToProcess.setupAwayTeam.split(",").forEach(function (at) {
-									if(at.split("|")[0] == (i + 1)) {
-										dataToProcess.awaySquad.forEach(function (as) {
-											if(at.split("|")[1] == as.playerId) {
-												select.value = as.captain;
-											}
-										});
-									}
-								});
-							}
+						if (i <= 6) {
+						    if (j == 2) {
+						        if (dataToProcess.setupHomeTeam) {
+						            dataToProcess.setupHomeTeam.split(",").forEach(function(ht) {
+						                if (ht.split("|")[0] == (i + 1)) {
+						                    (dataToProcess.homeSquad || []).forEach(function(hs) {
+						                        if (ht.split("|")[1] == hs.playerId) {
+						                            select.value = hs.captain;
+						                        }
+						                    });
+						                }
+						            });
+						        }
+						    } else if (j == 5) {
+						        if (dataToProcess.setupAwayTeam) {
+						            dataToProcess.setupAwayTeam.split(",").forEach(function(at) {
+						                if (at.split("|")[0] == (i + 1)) {
+						                    (dataToProcess.awaySquad || []).forEach(function(as) {
+						                        if (at.split("|")[1] == as.playerId) {
+						                            select.value = as.captain;
+						                        }
+						                    });
+						                }
+						            });
+						        }
+						    }
 						}
-						
-						if(i > 6 && (i-7) <= dataToProcess.homeSubstitutes.length -1){
-							switch(j) {
-							case 2:
-								select.value = dataToProcess.homeSubstitutes[i-7].captain;
-								break;
-							}
+						console.log(dataToProcess);
+						if (dataToProcess.homeSubstitutes &&
+						    i > 6 &&
+						    (i - 7) <= dataToProcess.homeSubstitutes.length - 1) {
+						    switch (j) {
+						        case 2:
+						            select.value = dataToProcess.homeSubstitutes[i - 7].captain;
+						            break;
+						    }
 						}
-						if(i > 6 && (i-7) <= dataToProcess.awaySubstitutes.length -1){
-							switch(j) {
-							case 5:
-								select.value = dataToProcess.awaySubstitutes[i-7].captain;
-								break;
-							}
+						if (dataToProcess.awaySubstitutes &&
+						    i > 6 &&
+						    (i - 7) <= dataToProcess.awaySubstitutes.length - 1) {
+						    switch (j) {
+						        case 5:
+						            select.value = dataToProcess.awaySubstitutes[i - 7].captain;
+						            break;
+						    }
 						}
-							
 						break;
 					}
 					switch(j) {
@@ -2137,6 +2160,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 					    anchor.name = 'homeTeam';
 					    anchor.id = 'homeTeam';
 						anchor.value = dataToProcess.homeTeamId;
+						console.log(dataToProcess);
 						anchor.innerHTML = dataToProcess.homeTeam.teamName1 + ': ' + dataToProcess.homeTeamScore ;
 
 						break;	
