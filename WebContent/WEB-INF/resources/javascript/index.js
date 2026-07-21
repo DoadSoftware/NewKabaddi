@@ -1946,7 +1946,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 					switch (option.id) {
 					case 'overwrite': case 'points': case 'points_raid': case 'points_tackle':
 						
-						option.setAttribute('data-toggle', 'dropdown');
+						option.setAttribute('data-bs-toggle', 'dropdown');
 						option.setAttribute('aria-haspopup', 'true');
 						option.setAttribute('aria-expanded', 'false');					
 						

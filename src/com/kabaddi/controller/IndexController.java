@@ -330,26 +330,28 @@ public class IndexController
 		return objectWriter.writeValueAsString(session_match);
 	}
 	
-	@RequestMapping(value = {"/processKabaddiProcedures"}, method={RequestMethod.GET,RequestMethod.POST})    
+	@RequestMapping(value = {"/processKabaddiProcedures.html"}, method={RequestMethod.GET,RequestMethod.POST})    
 	public @ResponseBody String processKabaddiProcedures(
 			@RequestParam(value = "whatToProcess", required = false, defaultValue = "") String whatToProcess,
 			@RequestParam(value = "valueToProcess", required = false, defaultValue = "") String valueToProcess)
 					throws JAXBException, IllegalAccessException, InvocationTargetException, IOException, NumberFormatException, InterruptedException, 
 						CsvException
 	{	
+		System.out.println("whatToProcess67--------------------------"+session_selected_broadcaster);
 		Event this_event = new Event();
 		if(session_selected_broadcaster != null) {
 			if(!whatToProcess.equalsIgnoreCase(KabaddiUtil.LOAD_TEAMS)) {
-				if(valueToProcess.contains(",")) {
+//				if(valueToProcess.contains(",")) {
 					if(session_match.getMatchFileName() == null || session_match.getMatchFileName().isEmpty()) {
 						session_event = new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY +
 								valueToProcess.split(",")[0]), EventFile.class);
 						session_match = new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY +
 								valueToProcess.split(",")[0]), Match.class);
+						System.out.println("session_match--------------------------"+session_match.getMatchFileName());
 						session_match.setEvents(session_event.getEvents());
 						session_match = KabaddiFunctions.populateMatchVariables(session_match, allPlayers, allTeams, allGrounds);
 					}
-				}
+//				}
 			}
 		}
 		switch (whatToProcess.toUpperCase()) {
@@ -790,17 +792,20 @@ public class IndexController
 			return objectWriter.writeValueAsString(session_match);
 
 		case KabaddiUtil.LOAD_MATCH: case KabaddiUtil.LOAD_SETUP:
-
+			System.out.println("valueToProcess1----------------------------------"+valueToProcess);
+			System.out.println("valueToProcess2----------------------------------"+session_match.getHomeTeam().getTeamName1());
 			if(valueToProcess.split(",").length == 2) {
 				session_match =  new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + 
 						KabaddiUtil.MATCHES_DIRECTORY + valueToProcess.split(",")[1]), Match.class);
 			}else if(valueToProcess.split(",").length == 1) {
+				System.out.println("valueToProcess69----------------------------------"+session_match.getHomeTeam().getTeamName1());
 				session_match = new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + 
 						KabaddiUtil.MATCHES_DIRECTORY + valueToProcess.split(",")[0]), Match.class);
 			}
+			
 			switch (whatToProcess.toUpperCase()) {
 			case KabaddiUtil.LOAD_MATCH:
-				
+				System.out.println("valueToProcess2----------------------------------"+valueToProcess);
 				if(valueToProcess.split(",").length == 2) {
 					if(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY + valueToProcess.split(",")[1]).exists()) {
 						session_event = new ObjectMapper().readValue(new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY +
