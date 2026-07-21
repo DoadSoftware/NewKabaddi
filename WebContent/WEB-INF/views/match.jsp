@@ -93,7 +93,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: fixed;
     top: 10px;
     left: 0;
     width: calc(100% - 72px);
@@ -218,7 +217,7 @@
 	  border: none;
 	  background-color: #0080FE;
       color: white;
-	  padding: 10px 20px;
+	  padding: 20px 20px;
 	  text-align: center;
 	  text-decoration: none;
 	  display: inline-block;
@@ -262,7 +261,7 @@
 			    <div class="panel panel-default">
 			      <div class="panel-heading">
 			        <h5 style="font-size: 2em;" class="panel-title">
-			          <a data-toggle="collapse" data-parent="#match_configuration" href="#load_setup_match">Configuration</a>
+			          <a data-bs-toggle="collapse" data-parent="#match_configuration" href="#load_setup_match">Configuration</a>
 			        </h5>
 			      </div>
 			      <div id="load_setup_match" class="panel-collapse collapse">

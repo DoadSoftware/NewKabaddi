@@ -520,7 +520,7 @@ function processUserSelection(whichInput)
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		if($('#homeTeamId option:selected').val() == $('#awayTeamId option:selected').val()) {
 			alert('Both teams cannot be same. Please choose different home and away team');
-    		processWaitingButtonSpinner('END_WAIT_TIMER');
+    			processWaitingButtonSpinner('END_WAIT_TIMER');
 			return false;
 		}
 		processKabaddiProcedures('LOAD_TEAMS',whichInput);
@@ -655,7 +655,7 @@ function processKabaddiProcedures(whatToProcess, whichInput)
 		value_to_process = $('#homeTeamId option:selected').val() + ',' + $('#awayTeamId option:selected').val();
 		break;
 
-	case 'LOAD_MATCH': case 'LOAD_SETUP':
+	case 'LOAD_SETUP': case 'LOAD_MATCH':
 		value_to_process = whichInput.val();
 		break;
 		
@@ -752,16 +752,15 @@ function processKabaddiProcedures(whatToProcess, whichInput)
         		addItemsToList('LOAD_TEAMS',data);
         		break;
         	
-			case 'LOG_EVENT': case 'LOAD_MATCH':
-				
+		case 'LOG_EVENT': case 'LOAD_MATCH':
         		addItemsToList('LOAD_MATCH',data);
 	        	switch(whatToProcess) {
 	        	case 'LOAD_MATCH':
-					document.getElementById('kabaddi_div').style.display = '';
-					document.getElementById('select_event_div').style.display = 'none';
-					setInterval(displayMatchTime, 2000);
-					break;
-				}
+				document.getElementById('kabaddi_div').style.display = '';
+				document.getElementById('select_event_div').style.display = 'none';
+				setInterval(displayMatchTime, 2000);
+				break;
+			}
         		break;
         	case 'LOAD_SETUP':
         		initialiseForm('SETUP',data);
@@ -1946,7 +1945,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 					switch (option.id) {
 					case 'overwrite': case 'points': case 'points_raid': case 'points_tackle':
 						
-						option.setAttribute('data-toggle', 'dropdown');
+						option.setAttribute('data-bs-toggle', 'dropdown');
 						option.setAttribute('aria-haspopup', 'true');
 						option.setAttribute('aria-expanded', 'false');					
 						
