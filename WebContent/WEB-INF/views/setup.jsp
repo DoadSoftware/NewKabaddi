@@ -187,7 +187,7 @@ table td select {
     <img src="<c:url value='/resources/Images/Design.jpg'/>" alt="Logo">
     <h2>DESIGN ON A DIME</h2>
   </div>
-<form:form name="setup_form" method="POST" action="match" enctype="multipart/form-data"
+<form:form name="setup_form" method="POST" action="match" 
 	modelAttribute="session_match">
 <div id ="match" class="content py-5" style="width: 100vw; height: 100vh; padding-top: 120px;">
   <div class="container" >

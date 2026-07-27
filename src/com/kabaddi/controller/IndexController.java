@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -202,7 +202,7 @@ public class IndexController
 	
 	@RequestMapping(value = {"/upload_match_setup_data", "/reset_and_upload_match_setup_data"}
 		,method={RequestMethod.GET,RequestMethod.POST})    
-	public @ResponseBody String uploadFormDataToSessionObjects(MultipartHttpServletRequest request) 
+	public @ResponseBody String uploadFormDataToSessionObjects(HttpServletRequest request)
 			throws IllegalAccessException, InvocationTargetException, JAXBException, IOException
 	{
 		if (request.getRequestURI().contains("upload_match_setup_data") 
@@ -216,20 +216,24 @@ public class IndexController
 			if(request.getRequestURI().contains("reset_and_upload_match_setup_data")) {
 				reset_all_variables = true;
 			} else if(request.getRequestURI().contains("upload_match_setup_data")) {
+				System.out.println("upload_match_setup_data");
+				System.out.println("SIZE - " + request.getParameterMap().entrySet().size());
 				for (Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+					System.out.println("HELLO");
 					if(entry.getKey().equalsIgnoreCase("select_existing_kabaddi_matches") && entry.getValue()[0].equalsIgnoreCase("new_match")) {
 						reset_all_variables = true;
 						break;
 					}
 				}
 			}
+			System.out.println("reset_all_variables - " + reset_all_variables);
 			if(reset_all_variables == true) {
 				session_match = new Match(); 
 				session_event = new EventFile();
 				session_event.setEvents(new ArrayList<Event>());
 				session_match.setMatchStats(new ArrayList<MatchStats>());
 			}
-			
+			System.out.println(request.getParameterMap().entrySet().toString());
 			for (Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
 	   			if(entry.getKey().contains("_")) {
    					if(entry.getKey().split("_")[0].equalsIgnoreCase(KabaddiUtil.HOME + KabaddiUtil.PLAYER)) {
@@ -320,6 +324,8 @@ public class IndexController
 //			JAXBContext.newInstance(EventFile.class).createMarshaller().marshal(session_event, 
 //					new File(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY + session_match.getMatchFileName()));
 			
+			System.out.println("session_match.getMatchFileName() - " + session_match.getMatchFileName());
+			
 			Files.write(Paths.get(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.MATCHES_DIRECTORY + session_match.getMatchFileName()), 
 				objectWriter.writeValueAsString(session_match).getBytes());			
 			Files.write(Paths.get(KabaddiUtil.KABADDI_DIRECTORY + KabaddiUtil.EVENT_DIRECTORY + session_match.getMatchFileName()), 
@@ -337,7 +343,6 @@ public class IndexController
 					throws JAXBException, IllegalAccessException, InvocationTargetException, IOException, NumberFormatException, InterruptedException, 
 						CsvException
 	{	
-		System.out.println("whatToProcess67--------------------------"+session_selected_broadcaster);
 		Event this_event = new Event();
 		if(session_selected_broadcaster != null) {
 			if(!whatToProcess.equalsIgnoreCase(KabaddiUtil.LOAD_TEAMS)) {
@@ -529,7 +534,6 @@ public class IndexController
 					session_match.setAwayTeamScore(session_match.getAwayTeamScore() + Integer.valueOf(valueToProcess.split(",")[1]));
 				}
 				
-				System.out.println(valueToProcess);
 				
 				session_match.getMatchStats().add(new MatchStats(session_match.getMatchStats().size() + 1, 0, session_match.getClock().getMatchHalves(),
 						valueToProcess.split(",")[2], Integer.valueOf(valueToProcess.split(",")[1]), session_match.getClock().getMatchTotalMilliSeconds(),

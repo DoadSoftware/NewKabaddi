@@ -175,15 +175,15 @@ function initialiseForm(whatToProcess, dataToProcess)
 }
 function uploadFormDataToSessionObjects(whatToProcess)
 {
-	var formData = new FormData();
+	var formData = {};
 	var url_path;
 
 	$('input, select, textarea').each(
 		function(index){  
 			if($(this).is("select")) {
-				formData.append($(this).attr('id'),$('#' + $(this).attr('id') + ' option:selected').val());  
+				formData[$(this).attr('id')] = $('#' + $(this).attr('id') + ' option:selected').val();
 			} else {
-				formData.append($(this).attr('id'),$(this).val());  
+				formData[$(this).attr('id')] = $(this).val();
 			}	
 		}
 	);
@@ -201,9 +201,6 @@ function uploadFormDataToSessionObjects(whatToProcess)
 		headers: {'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content')},
         url : url_path,     
         data : formData,
-        cache: false,
-        contentType: false,
-        processData: false,
         type: 'POST',     
         success : function(data) {
         	switch(whatToProcess.toUpperCase()) {

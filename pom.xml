@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
   <groupId>NewKabaddi</groupId>
   <artifactId>NewKabaddi</artifactId>
-  <version>2.4</version>
+  <version>2.9</version>
   <packaging>war</packaging>
   <name>NewKabaddi</name>
   <properties>
@@ -21,7 +21,7 @@
  <dependency>
     <groupId>com.kabaddi</groupId>
     <artifactId>NewKabaddiLibrary</artifactId>
-    <version>2.5</version>
+    <version>2.9</version>
 </dependency>
   
 <dependency>
